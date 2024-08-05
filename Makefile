@@ -12,7 +12,9 @@ ${GREEN_BOLD}Master Makefile${END}
 		
 	- ms-image-clean: Remove all open-ims development images from your machine... (Starting the application after may take longer as images will need to build)
 	
-	- pgadmin: Open PGAdmin UI on browser (http://localhost:30007) user: admin@openims.com pass: admin
+	- pgadmin-ui: Open PGAdmin UI on browser (http://localhost:30007) user: ${BLUE_BOLD}admin@openims.com${END} pass: ${BLUE_BOLD}admin${END}
+
+	- grafana-ui: Open Grafana UI on browser (http://localhost/grafana) user: ${BLUE_BOLD}admin${END} pass: ${BLUE_BOLD}admin${END}
 
 
 	${ORANGE_BOLD}- TODO:${END}
@@ -51,9 +53,13 @@ dev:
 	./start.sh dev
 .PHONY: dev
 
-pgadmin:
+pgadmin-ui:
 	explorer.exe "http://localhost:30007" & 
-.PHONY: pgadmin
+.PHONY: pgadmin-ui
+
+grafana-ui:
+	explorer.exe "http://localhost/grafana" & 
+.PHONY: grafana-ui
 
 prod:
 	./start.sh prod
