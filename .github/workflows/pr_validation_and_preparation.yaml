@@ -31,11 +31,11 @@ jobs:
           sudo install skaffold /usr/local/bin/
           skaffold version
 
-      - name: Cache skaffold image builds & config
-        uses: actions/cache@v3
-        with:
-          path: ~/.skaffold/
-          key: fixed-${{ github.sha }}
+      # - name: Cache skaffold image builds & config
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.skaffold/
+      #     key: fixed-${{ github.sha }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
