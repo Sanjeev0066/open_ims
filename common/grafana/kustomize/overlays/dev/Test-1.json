@@ -265,7 +265,7 @@
             "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"invoice_date\") AS time,\r\n    (\r\n      SELECT SUM(\r\n        (item->>'quantity')::NUMERIC * \r\n        ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n      )\r\n      FROM unnest(product_quantity_rate_list) AS item\r\n    ) AS amount_due,\r\n    payment_status\r\n  FROM\r\n    invoice_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"earnings\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
+            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"invoice_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    invoice_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"earnings\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
             "refId": "B",
             "sql": {
               "columns": [
@@ -294,7 +294,7 @@
             "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"invoice_date\") AS time,\r\n    (\r\n      SELECT SUM(\r\n        (item->>'quantity')::NUMERIC * \r\n        ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n      )\r\n      FROM unnest(product_quantity_rate_list) AS item\r\n    ) AS amount_due,\r\n    payment_status\r\n  FROM\r\n    invoice_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"projected earnings\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Not paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
+            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"invoice_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    invoice_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"projected earnings\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Not paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
             "refId": "A",
             "sql": {
               "columns": [
@@ -323,7 +323,7 @@
             "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"purchase_date\") AS time,\r\n        (\r\n      SELECT SUM(\r\n        (item->>'quantity')::NUMERIC * \r\n        ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n      )\r\n      FROM unnest(product_quantity_rate_list) AS item\r\n    ) AS amount_due,\r\n    payment_status\r\n  FROM\r\n    purchase_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS expenses\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
+            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"purchase_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    purchase_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS expenses\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
             "refId": "C",
             "sql": {
               "columns": [
@@ -352,7 +352,7 @@
             "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"purchase_date\") AS time,\r\n        (\r\n      SELECT SUM(\r\n        (item->>'quantity')::NUMERIC * \r\n        ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n      )\r\n      FROM unnest(product_quantity_rate_list) AS item\r\n    ) AS amount_due,\r\n    payment_status\r\n  FROM\r\n    purchase_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"projected expenses\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Not paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
+            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"purchase_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    purchase_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"projected expenses\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\") AND payment_status = 'Not paid'\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
             "refId": "F",
             "sql": {
               "columns": [
@@ -379,9 +379,132 @@
             },
             "editorMode": "code",
             "format": "table",
+            "hide": true,
+            "rawQuery": true,
+            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"purchase_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    purchase_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"Expenses sum\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\")\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
+            "refId": "D",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          },
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "psql_dev_1"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "hide": true,
+            "rawQuery": true,
+            "rawSql": "WITH group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"invoice_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    invoice_orders\r\n)\r\nSELECT\r\n  \"time\" AT TIME ZONE 'UTC' AS time,\r\n  SUM(amount_due) AS \"Earnings sum\"\r\nFROM\r\n    group_by_time\r\nWHERE \r\n    $__timeFilter(\"time\")\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
+            "refId": "E",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          },
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "psql_dev_1"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "hide": true,
+            "rawQuery": true,
+            "rawSql": "SELECT\r\n    COALESCE(e.time, p.time) AS time,\r\n    (COALESCE(e.\"Earnings sum\", 0) + COALESCE(p.\"Expenses sum\", 0)) AS \"profit\"\r\nFROM\r\n    (SELECT\r\n        $__timeGroup(\"invoice_date\", '[[group_by_interval]]') AS time,\r\n        SUM(amount_due) AS \"Earnings sum\"\r\n    FROM\r\n        invoice_orders\r\n    WHERE \r\n        $__timeFilter(\"invoice_date\")\r\n    GROUP BY\r\n        $__timeGroup(\"invoice_date\", '[[group_by_interval]]')\r\n    ) e\r\nFULL OUTER JOIN\r\n    (SELECT\r\n        $__timeGroup(\"purchase_date\", '[[group_by_interval]]') AS time,\r\n        SUM(amount_due)*-1 AS \"Expenses sum\"\r\n    FROM\r\n        purchase_orders\r\n    WHERE \r\n        $__timeFilter(\"purchase_date\")\r\n    GROUP BY\r\n        $__timeGroup(\"purchase_date\", '[[group_by_interval]]')\r\n    ) p ON e.time = p.time\r\nORDER BY\r\n    time;\r\n",
+            "refId": "G",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          },
+          {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0,
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": []
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "downsampler": "sum",
+            "expression": "$E - $D",
+            "hide": true,
+            "refId": "profit",
+            "type": "math",
+            "upsampler": "fillna",
+            "window": "1M"
+          },
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "psql_dev_1"
+            },
+            "editorMode": "code",
+            "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH purchase_group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"purchase_date\") AS time,\r\n        (\r\n      SELECT SUM(\r\n        (item->>'quantity')::NUMERIC * \r\n        ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n      )\r\n      FROM unnest(product_quantity_rate_list) AS item\r\n    ) AS amount_due,\r\n    payment_status\r\n  FROM\r\n    purchase_orders\r\n),\r\ninvoice_group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"invoice_date\") AS time,\r\n        (\r\n      SELECT SUM(\r\n        (item->>'quantity')::NUMERIC * \r\n        ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n      )\r\n      FROM unnest(product_quantity_rate_list) AS item\r\n    ) AS amount_due,\r\n    payment_status\r\n  FROM\r\n    invoice_orders\r\n),\r\nexpenses AS (\r\n  SELECT\r\n    \"time\" AT TIME ZONE 'UTC' AS time,\r\n    SUM(amount_due) AS \"expenses\"\r\n  FROM\r\n    purchase_group_by_time\r\n  WHERE \r\n    $__timeFilter(\"time\")\r\n  GROUP BY\r\n    time\r\n),\r\nearnings AS (\r\n  SELECT\r\n    \"time\" AT TIME ZONE 'UTC' AS time,\r\n    SUM(amount_due) AS \"earnings\"\r\n  FROM\r\n    invoice_group_by_time\r\n  WHERE \r\n    $__timeFilter(\"time\")\r\n  GROUP BY\r\n    time\r\n)\r\nSELECT\r\n  COALESCE(expenses.time, earnings.time) AS time,\r\n  COALESCE(earnings.\"earnings\", 0) - COALESCE(expenses.\"expenses\", 0) AS \"profit\"\r\nFROM\r\n  expenses\r\nFULL OUTER JOIN\r\n  earnings\r\nON\r\n  expenses.time = earnings.time\r\nORDER BY\r\n  time;\r\n",
+            "rawSql": "WITH purchase_group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"purchase_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    purchase_orders\r\n),\r\ninvoice_group_by_time AS (\r\n  SELECT\r\n    date_trunc('[[granularity]]', \"invoice_date\") AS time,\r\n    amount_due,\r\n    payment_status\r\n  FROM\r\n    invoice_orders\r\n),\r\nexpenses AS (\r\n  SELECT\r\n    \"time\" AT TIME ZONE 'UTC' AS time,\r\n    SUM(amount_due) AS \"expenses\"\r\n  FROM\r\n    purchase_group_by_time\r\n  WHERE \r\n    $__timeFilter(\"time\")\r\n  GROUP BY\r\n    time\r\n),\r\nearnings AS (\r\n  SELECT\r\n    \"time\" AT TIME ZONE 'UTC' AS time,\r\n    SUM(amount_due) AS \"earnings\"\r\n  FROM\r\n    invoice_group_by_time\r\n  WHERE \r\n    $__timeFilter(\"time\")\r\n  GROUP BY\r\n    time\r\n)\r\nSELECT\r\n  COALESCE(expenses.time, earnings.time) AS time,\r\n  COALESCE(earnings.\"earnings\", 0) - COALESCE(expenses.\"expenses\", 0) AS \"profit\"\r\nFROM\r\n  expenses\r\nFULL OUTER JOIN\r\n  earnings\r\nON\r\n  expenses.time = earnings.time\r\nORDER BY\r\n  time;\r\n",
             "refId": "H",
             "sql": {
               "columns": [
@@ -599,7 +722,7 @@
             "format": "time_series",
             "hide": true,
             "rawQuery": true,
-            "rawSql": "SELECT\r\n  $__timeGroup(\"purchase_date\", '1d', 0) + (\r\n    extract(\r\n      epoch\r\n      from\r\n        CURRENT_TIMESTAMP AT TIME ZONE 'UTC'\r\n    ) - extract(\r\n      epoch\r\n      from\r\n        CURRENT_TIMESTAMP AT TIME ZONE '$__timezone'\r\n    )\r\n  ) as time,\r\n  SUM(amount_due) AS total_expenses\r\nFROM\r\n  purchase_orders\r\nWHERE\r\n  $__timeFilter(\"purchase_date\")\r\nGROUP BY\r\n  time\r\nORDER BY\r\n  time;",
+            "rawSql": "SELECT\r\n  $__timeGroup(\"purchase_date\", '1d', 0) + \r\n  (\r\n    extract(\r\n      epoch\r\n      from\r\n        CURRENT_TIMESTAMP AT TIME ZONE 'UTC'\r\n    ) - extract(\r\n      epoch\r\n      from\r\n        CURRENT_TIMESTAMP AT TIME ZONE '$__timezone'\r\n    )\r\n  ) \r\n  as time,\r\n  SUM(amount_due) AS total_expenses\r\nFROM\r\n    purchase_orders \r\nWHERE \r\n    $__timeFilter(\"purchase_date\")\r\nGROUP BY\r\n    time\r\nORDER BY\r\n    time;\r\n",
             "refId": "B",
             "sql": {
               "columns": [
@@ -668,7 +791,7 @@
             "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH total_expenses AS (\r\n  SELECT\r\n    SUM(\r\n      (\r\n        SELECT SUM(\r\n          (item->>'quantity')::NUMERIC * \r\n          ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n        )\r\n        FROM unnest(product_quantity_rate_list) AS item\r\n      )\r\n    ) AS expenses\r\n  FROM\r\n    purchase_orders\r\n  WHERE\r\n    $__timeFilter(purchase_date)\r\n),\r\ntotal_earnings AS (\r\n  SELECT\r\n    SUM(\r\n      (\r\n        SELECT SUM(\r\n          (item->>'quantity')::NUMERIC * \r\n          ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n        )\r\n        FROM unnest(product_quantity_rate_list) AS item\r\n      )\r\n    ) AS earnings\r\n  FROM\r\n    invoice_orders\r\n  WHERE\r\n    $__timeFilter(invoice_date)\r\n)\r\nSELECT\r\n  NOW() AS time,  -- Grafana requires a time column, use current timestamp since \r\n  (COALESCE(total_earnings.earnings, 0) - COALESCE(total_expenses.expenses, 0)) AS profit_this_period\r\nFROM\r\n  total_expenses,\r\n  total_earnings;\r\n",
+            "rawSql": "WITH total_expenses AS (\r\n  SELECT\r\n    SUM(amount_due) AS expenses\r\n  FROM\r\n    purchase_orders\r\n  WHERE\r\n    $__timeFilter(purchase_date)\r\n),\r\ntotal_earnings AS (\r\n  SELECT\r\n    SUM(amount_due) AS earnings\r\n  FROM\r\n    invoice_orders\r\n  WHERE\r\n    $__timeFilter(invoice_date)\r\n)\r\nSELECT\r\n  NOW() AS time,  -- Grafana requires a time column, use current timestamp since \r\n  (COALESCE(total_earnings.earnings, 0) - COALESCE(total_expenses.expenses, 0)) AS profit_this_period\r\nFROM\r\n  total_expenses,\r\n  total_earnings;\r\n",
             "refId": "D",
             "sql": {
               "columns": [
@@ -840,7 +963,7 @@
             "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH total_earnings AS (\r\n  SELECT\r\n    -- SUM(amount_due) AS earnings\r\n    SUM(\r\n      (\r\n        SELECT\r\n          SUM(\r\n            (item ->> 'quantity') :: NUMERIC * (\r\n              (item ->> 'rate') :: NUMERIC - (item ->> 'discount') :: NUMERIC\r\n            )\r\n          )\r\n        FROM\r\n          unnest(product_quantity_rate_list) AS item\r\n      )\r\n    ) AS earnings\r\n  FROM\r\n    invoice_orders\r\n  WHERE\r\n    $__timeFilter(invoice_date)\r\n)\r\nSELECT\r\n  NOW() AS time,\r\n  -- Grafana requires a time column, use current timestamp\r\n  COALESCE(total_earnings.earnings, 0) AS total_earnings\r\nFROM\r\n  total_earnings;",
+            "rawSql": "WITH total_earnings AS (\r\n  SELECT\r\n    SUM(amount_due) AS earnings\r\n  FROM\r\n    invoice_orders\r\n  WHERE\r\n    $__timeFilter(invoice_date)\r\n)\r\nSELECT\r\n  NOW() AS time,  -- Grafana requires a time column, use current timestamp\r\n  COALESCE(total_earnings.earnings, 0) AS total_earnings\r\nFROM\r\n  total_earnings;\r\n",
             "refId": "B",
             "sql": {
               "columns": [
@@ -955,7 +1078,7 @@
             "format": "table",
             "hide": false,
             "rawQuery": true,
-            "rawSql": "WITH total_expenses AS (\r\n  SELECT\r\n    -- SUM(amount_due) AS expenses\r\n    SUM(\r\n      (\r\n        SELECT\r\n          SUM(\r\n            (item ->> 'quantity') :: NUMERIC * (\r\n              (item ->> 'rate') :: NUMERIC - (item ->> 'discount') :: NUMERIC\r\n            )\r\n          )\r\n        FROM\r\n          unnest(product_quantity_rate_list) AS item\r\n      )\r\n    ) AS expenses\r\n  FROM\r\n    purchase_orders\r\n  WHERE\r\n    $__timeFilter(purchase_date)\r\n)\r\nSELECT\r\n  NOW() AS time,\r\n  -- Grafana requires a time column, use current timestamp\r\n  COALESCE(total_expenses.expenses, 0) AS total_expenses\r\nFROM\r\n  total_expenses;",
+            "rawSql": "WITH total_expenses AS (\r\n  SELECT\r\n    SUM(amount_due) AS expenses\r\n  FROM\r\n    purchase_orders\r\n  WHERE\r\n    $__timeFilter(purchase_date)\r\n)\r\nSELECT\r\n  NOW() AS time,  -- Grafana requires a time column, use current timestamp\r\n  COALESCE(total_expenses.expenses, 0) AS total_expenses\r\nFROM\r\n  total_expenses;\r\n",
             "refId": "B",
             "sql": {
               "columns": [
@@ -1544,7 +1667,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT \r\n    io.invoice_id AS invoice_id,\r\n    io.reference_number AS \"invoice #\",\r\n    ct.id AS customer_id,\r\n    ct.company_name AS customer,\r\n    (\r\n      SELECT SUM(\r\n        (item->>'quantity')::NUMERIC * \r\n        ((item->>'rate')::NUMERIC - (item->>'discount')::NUMERIC)\r\n      )\r\n      FROM unnest(io.product_quantity_rate_list) AS item\r\n    ) AS \"total amount\",\r\n    io.delivery_status AS \"delivery status\",\r\n    io.payment_status AS \"payment status\",\r\n    io.invoice_date AS \"invoice date\"\r\nFROM \r\n    invoice_orders io\r\nJOIN \r\n    customer_table ct ON io.customer_id = ct.id\r\nORDER BY \r\n    io.invoice_date DESC\r\nLIMIT 10;\r\n",
+            "rawSql": "SELECT \r\n    io.invoice_id AS invoice_id,\r\n    io.reference_number AS \"invoice #\",\r\n    ct.id AS customer_id,\r\n    ct.company_name AS customer,\r\n    io.amount_due AS \"total amount\",\r\n    io.delivery_status AS \"delivery status\",\r\n    io.payment_status AS \"payment status\",\r\n    io.invoice_date AS \"invoice date\"\r\nFROM \r\n    invoice_orders io\r\nJOIN \r\n    customer_table ct ON io.customer_id = ct.id\r\nORDER BY \r\n    io.invoice_date DESC\r\nLIMIT 10;\r\n",
             "refId": "A",
             "sql": {
               "columns": [
@@ -1587,365 +1710,6 @@
               "includeByName": {},
               "indexByName": {},
               "renameByName": {
-                "invoice_id": ""
-              }
-            }
-          }
-        ],
-        "type": "table"
-      },
-      {
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "psql_dev_1"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "fixedColor": "text",
-              "mode": "fixed"
-            },
-            "custom": {
-              "align": "center",
-              "cellOptions": {
-                "type": "color-text"
-              },
-              "filterable": false,
-              "inspect": false
-            },
-            "links": [],
-            "mappings": [
-              {
-                "options": {
-                  "Delivered": {
-                    "color": "green",
-                    "index": 2
-                  },
-                  "Not paid": {
-                    "color": "red",
-                    "index": 3
-                  },
-                  "Not shipped": {
-                    "color": "red",
-                    "index": 0
-                  },
-                  "Paid": {
-                    "color": "green",
-                    "index": 4
-                  },
-                  "Shipped": {
-                    "color": "yellow",
-                    "index": 1
-                  }
-                },
-                "type": "value"
-              }
-            ],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "string"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Item Number"
-              },
-              "properties": [
-                {
-                  "id": "links",
-                  "value": []
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 11,
-          "w": 12,
-          "x": 0,
-          "y": 32
-        },
-        "id": 11,
-        "options": {
-          "cellHeight": "md",
-          "footer": {
-            "countRows": false,
-            "enablePagination": false,
-            "fields": "",
-            "reducer": [],
-            "show": false
-          },
-          "showHeader": true,
-          "sortBy": []
-        },
-        "pluginVersion": "10.4.2",
-        "targets": [
-          {
-            "datasource": {
-              "type": "grafana-postgresql-datasource",
-              "uid": "psql_dev_1"
-            },
-            "editorMode": "code",
-            "format": "table",
-            "rawQuery": true,
-            "rawSql": "SELECT \r\n    p.item_number AS \"Item Number\",\r\n    p.product_name AS \"Product Name\",\r\n    p.taxable AS \"Taxable Status\",\r\n    p.rate AS \"Rate\"\r\nFROM \r\n    products_table p\r\nORDER BY \r\n    p.product_name\r\nLIMIT 10;\r\n",
-            "refId": "A",
-            "sql": {
-              "columns": [
-                {
-                  "parameters": [],
-                  "type": "function"
-                }
-              ],
-              "groupBy": [
-                {
-                  "property": {
-                    "type": "string"
-                  },
-                  "type": "groupBy"
-                }
-              ],
-              "limit": 50
-            }
-          }
-        ],
-        "title": "products overview",
-        "transformations": [
-          {
-            "id": "formatTime",
-            "options": {
-              "outputFormat": "YYYY-MM-DD",
-              "timeField": "invoice date",
-              "timezone": "utc",
-              "useTimezone": true
-            }
-          },
-          {
-            "id": "organize",
-            "options": {
-              "excludeByName": {
-                "customer_id": false,
-                "id": true,
-                "invoice_id": false
-              },
-              "includeByName": {},
-              "indexByName": {},
-              "renameByName": {
-                "invoice_id": ""
-              }
-            }
-          }
-        ],
-        "type": "table"
-      },
-      {
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "psql_dev_1"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "fixedColor": "text",
-              "mode": "fixed"
-            },
-            "custom": {
-              "align": "center",
-              "cellOptions": {
-                "type": "color-text"
-              },
-              "filterable": false,
-              "inspect": false
-            },
-            "links": [],
-            "mappings": [
-              {
-                "options": {
-                  "Delivered": {
-                    "color": "green",
-                    "index": 2
-                  },
-                  "Not paid": {
-                    "color": "red",
-                    "index": 3
-                  },
-                  "Not shipped": {
-                    "color": "red",
-                    "index": 0
-                  },
-                  "Paid": {
-                    "color": "green",
-                    "index": 4
-                  },
-                  "Shipped": {
-                    "color": "yellow",
-                    "index": 1
-                  }
-                },
-                "type": "value"
-              }
-            ],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "string"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "invoice #"
-              },
-              "properties": [
-                {
-                  "id": "links"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "total amount"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "currencyUSD"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "invoice #"
-              },
-              "properties": [
-                {
-                  "id": "links",
-                  "value": [
-                    {
-                      "targetBlank": true,
-                      "title": "view order",
-                      "url": "http://localhost/ccg/invoices/read/${__data.fields.invoice_id}"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "customer"
-              },
-              "properties": [
-                {
-                  "id": "links",
-                  "value": [
-                    {
-                      "targetBlank": true,
-                      "title": "view customer",
-                      "url": "http://localhost/ccg/customers/read/${__data.fields.customer_id}"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 11,
-          "w": 12,
-          "x": 12,
-          "y": 32
-        },
-        "id": 12,
-        "options": {
-          "cellHeight": "md",
-          "footer": {
-            "countRows": false,
-            "enablePagination": false,
-            "fields": "",
-            "reducer": [],
-            "show": false
-          },
-          "showHeader": true,
-          "sortBy": [
-            {
-              "desc": true,
-              "displayName": "invoice #"
-            }
-          ]
-        },
-        "pluginVersion": "10.4.2",
-        "targets": [
-          {
-            "datasource": {
-              "type": "grafana-postgresql-datasource",
-              "uid": "psql_dev_1"
-            },
-            "editorMode": "code",
-            "format": "table",
-            "rawQuery": true,
-            "rawSql": "SELECT \r\n    up.item_number AS \"Item Number\",\r\n    p.product_name AS \"Product Name\",\r\n    up.vendor_id AS \"Vendor ID\",\r\n    up.lot AS \"Lot\",\r\n    up.exp_date AS \"Expiration Date\",\r\n    up.quantity_on_hand AS \"Quantity On Hand\"\r\nFROM \r\n    unique_products_table up\r\nJOIN \r\n    products_table p ON up.item_number = p.item_number\r\nWHERE\r\n    up.item_number = '[[test1]]'\r\nORDER BY \r\n    up.lot\r\nLIMIT 10;\r\n",
-            "refId": "A",
-            "sql": {
-              "columns": [
-                {
-                  "parameters": [],
-                  "type": "function"
-                }
-              ],
-              "groupBy": [
-                {
-                  "property": {
-                    "type": "string"
-                  },
-                  "type": "groupBy"
-                }
-              ],
-              "limit": 50
-            }
-          }
-        ],
-        "title": "product by lot",
-        "transformations": [
-          {
-            "id": "formatTime",
-            "options": {
-              "outputFormat": "YYYY-MM-DD",
-              "timeField": "Expiration Date",
-              "timezone": "utc",
-              "useTimezone": true
-            }
-          },
-          {
-            "id": "organize",
-            "options": {
-              "excludeByName": {
-                "customer_id": false,
-                "id": true,
-                "invoice_id": false
-              },
-              "includeByName": {},
-              "indexByName": {},
-              "renameByName": {
-                "Item Number": "",
                 "invoice_id": ""
               }
             }
@@ -2023,47 +1787,12 @@
           "queryValue": "",
           "skipUrlSync": false,
           "type": "custom"
-        },
-        {
-          "current": {
-            "selected": false,
-            "text": "2",
-            "value": "2"
-          },
-          "description": "test1",
-          "hide": 0,
-          "label": "test1",
-          "name": "test1",
-          "options": [
-            {
-              "selected": true,
-              "text": "2",
-              "value": "2"
-            }
-          ],
-          "query": "2",
-          "skipUrlSync": false,
-          "type": "textbox"
-        },
-        {
-          "current": {},
-          "description": "test0",
-          "hide": 0,
-          "includeAll": false,
-          "label": "test0",
-          "multi": false,
-          "name": "test0",
-          "options": [],
-          "query": "",
-          "queryValue": "",
-          "skipUrlSync": false,
-          "type": "custom"
         }
       ]
     },
     "time": {
-      "from": "now-7d",
-      "to": "now"
+      "from": "2024-06-01T00:00:00.000Z",
+      "to": "2024-06-30T23:59:59.999Z"
     },
     "timepicker": {},
     "timezone": "utc",

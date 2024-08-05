@@ -416,10 +416,7 @@ VALUES
           SELECT 
               up.item_number,
               FLOOR(random() * 9) + 1 AS quantity,
-              15.75 AS rate,
-              TRUE AS taxable,
-              FLOOR(random() * 3) + 0 AS discount,
-              up.lot
+              15.75 AS rate
           FROM unique_products_table up
           WHERE up.vendor_id = v.created_by
           LIMIT FLOOR(random() * 9) + 1 -- test
@@ -434,10 +431,7 @@ VALUES
       SELECT 
           up.item_number,
           FLOOR(random() * 9) + 1 AS quantity,
-          15.75 AS rate,
-          TRUE AS taxable,
-          FLOOR(random() * 3) + 0 AS discount,
-          up.lot
+          15.75 AS rate
       FROM unique_products_table up
       WHERE up.vendor_id = v.created_by
       LIMIT FLOOR(random() * 9) + 1
@@ -461,12 +455,7 @@ VALUES
               SELECT 
                   up.item_number,
                   FLOOR(random() * 9) + 1 AS quantity,
-                  15.75 AS rate,
-                  p.product_name,
-                  TRUE AS taxable,
-                  FLOOR(random() * 3) + 0 AS discount,
-                  up.lot,
-                  up.vendor_id
+                  15.75 AS rate
               FROM unique_products_table up
               WHERE up.vendor_id = c.created_by
               LIMIT FLOOR(random() * 9) + 1
@@ -490,13 +479,7 @@ VALUES
       SELECT 
           up.item_number,
           FLOOR(random() * 9) + 1 AS quantity,
-          15.75 AS rate,
-          p.product_name,
-          TRUE AS taxable,
-          FLOOR(random() * 3) + 0 AS discount,
-          up.lot,
-          up.vendor_id
-
+          15.75 AS rate
       FROM unique_products_table up
       WHERE up.vendor_id = c.created_by
       LIMIT FLOOR(random() * 9) + 1
