@@ -103,6 +103,9 @@ profiles:
             # wait: true
             upgradeOnChange: true
             repo: https://prometheus-community.github.io/helm-charts
+            setValues:
+              collector.systemd: true 
+              collector.processes: true
           
           - name: node-exporter
             remoteChart: prometheus-node-exporter

@@ -1,53 +1,4 @@
 {
-    "__inputs": [
-      {
-        "name": "DS_PROMETHEUS",
-        "label": "Prometheus",
-        "description": "",
-        "type": "datasource",
-        "pluginId": "prometheus",
-        "pluginName": "Prometheus"
-      }
-    ],
-    "__elements": {},
-    "__requires": [
-      {
-        "type": "panel",
-        "id": "bargauge",
-        "name": "Bar gauge",
-        "version": ""
-      },
-      {
-        "type": "panel",
-        "id": "gauge",
-        "name": "Gauge",
-        "version": ""
-      },
-      {
-        "type": "grafana",
-        "id": "grafana",
-        "name": "Grafana",
-        "version": "9.4.3"
-      },
-      {
-        "type": "datasource",
-        "id": "prometheus",
-        "name": "Prometheus",
-        "version": "1.0.0"
-      },
-      {
-        "type": "panel",
-        "id": "stat",
-        "name": "Stat",
-        "version": ""
-      },
-      {
-        "type": "panel",
-        "id": "timeseries",
-        "name": "Time series",
-        "version": ""
-      }
-    ],
     "annotations": {
       "list": [
         {
@@ -75,7 +26,6 @@
     "fiscalYearStartMonth": 0,
     "gnetId": 1860,
     "graphTooltip": 1,
-    "id": null,
     "links": [
       {
         "icon": "external link",
@@ -100,7 +50,7 @@
         "collapsed": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -114,7 +64,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -166,11 +116,12 @@
           "y": 1
         },
         "id": 323,
-        "links": [],
         "options": {
           "displayMode": "basic",
+          "maxVizHeight": 300,
           "minVizHeight": 10,
           "minVizWidth": 0,
+          "namePlacement": "auto",
           "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
@@ -180,9 +131,11 @@
             "values": false
           },
           "showUnfilled": true,
-          "text": {}
+          "sizing": "auto",
+          "text": {},
+          "valueMode": "color"
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -291,8 +244,9 @@
           "y": 1
         },
         "id": 20,
-        "links": [],
         "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
           "orientation": "auto",
           "reduceOptions": {
             "calcs": [
@@ -302,9 +256,10 @@
             "values": false
           },
           "showThresholdLabels": false,
-          "showThresholdMarkers": true
+          "showThresholdMarkers": true,
+          "sizing": "auto"
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -379,8 +334,9 @@
           "y": 1
         },
         "id": 155,
-        "links": [],
         "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
           "orientation": "auto",
           "reduceOptions": {
             "calcs": [
@@ -390,9 +346,10 @@
             "values": false
           },
           "showThresholdLabels": false,
-          "showThresholdMarkers": true
+          "showThresholdMarkers": true,
+          "sizing": "auto"
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -458,8 +415,9 @@
         },
         "hideTimeOverride": false,
         "id": 16,
-        "links": [],
         "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
           "orientation": "auto",
           "reduceOptions": {
             "calcs": [
@@ -469,9 +427,10 @@
             "values": false
           },
           "showThresholdLabels": false,
-          "showThresholdMarkers": true
+          "showThresholdMarkers": true,
+          "sizing": "auto"
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -562,8 +521,9 @@
           "y": 1
         },
         "id": 21,
-        "links": [],
         "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
           "orientation": "auto",
           "reduceOptions": {
             "calcs": [
@@ -573,9 +533,10 @@
             "values": false
           },
           "showThresholdLabels": false,
-          "showThresholdMarkers": true
+          "showThresholdMarkers": true,
+          "sizing": "auto"
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -648,8 +609,9 @@
           "y": 1
         },
         "id": 154,
-        "links": [],
         "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
           "orientation": "auto",
           "reduceOptions": {
             "calcs": [
@@ -659,9 +621,10 @@
             "values": false
           },
           "showThresholdLabels": false,
-          "showThresholdMarkers": true
+          "showThresholdMarkers": true,
+          "sizing": "auto"
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -728,7 +691,6 @@
           "y": 1
         },
         "id": 14,
-        "links": [],
         "maxDataPoints": 100,
         "options": {
           "colorMode": "none",
@@ -742,9 +704,11 @@
             "fields": "",
             "values": false
           },
-          "textMode": "auto"
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -811,7 +775,6 @@
         },
         "hideTimeOverride": true,
         "id": 15,
-        "links": [],
         "maxDataPoints": 100,
         "options": {
           "colorMode": "none",
@@ -825,9 +788,11 @@
             "fields": "",
             "values": false
           },
-          "textMode": "auto"
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -898,7 +863,6 @@
           "y": 3
         },
         "id": 23,
-        "links": [],
         "maxDataPoints": 100,
         "options": {
           "colorMode": "none",
@@ -912,9 +876,11 @@
             "fields": "",
             "values": false
           },
-          "textMode": "auto"
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -983,7 +949,6 @@
           "y": 3
         },
         "id": 75,
-        "links": [],
         "maxDataPoints": 100,
         "options": {
           "colorMode": "none",
@@ -997,9 +962,11 @@
             "fields": "",
             "values": false
           },
-          "textMode": "auto"
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -1066,7 +1033,6 @@
           "y": 3
         },
         "id": 18,
-        "links": [],
         "maxDataPoints": 100,
         "options": {
           "colorMode": "none",
@@ -1080,9 +1046,11 @@
             "fields": "",
             "values": false
           },
-          "textMode": "auto"
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
         },
-        "pluginVersion": "9.4.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "datasource": {
@@ -1106,7 +1074,7 @@
         "collapsed": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -1120,7 +1088,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -1140,6 +1108,7 @@
               "mode": "palette-classic"
             },
             "custom": {
+              "axisBorderShow": false,
               "axisCenteredZero": false,
               "axisColorMode": "text",
               "axisLabel": "",
@@ -1153,6 +1122,7 @@
                 "tooltip": false,
                 "viz": false
               },
+              "insertNulls": false,
               "lineInterpolation": "smooth",
               "lineWidth": 1,
               "pointSize": 5,
@@ -1302,7 +1272,6 @@
           "y": 6
         },
         "id": 77,
-        "links": [],
         "options": {
           "legend": {
             "calcs": [],
@@ -1422,6 +1391,7 @@
               "mode": "palette-classic"
             },
             "custom": {
+              "axisBorderShow": false,
               "axisCenteredZero": false,
               "axisColorMode": "text",
               "axisLabel": "",
@@ -1435,6 +1405,7 @@
                 "tooltip": false,
                 "viz": false
               },
+              "insertNulls": false,
               "lineInterpolation": "linear",
               "lineWidth": 1,
               "pointSize": 5,
@@ -1846,7 +1817,6 @@
           "y": 6
         },
         "id": 78,
-        "links": [],
         "options": {
           "legend": {
             "calcs": [],
@@ -1940,6 +1910,7 @@
               "mode": "palette-classic"
             },
             "custom": {
+              "axisBorderShow": false,
               "axisCenteredZero": false,
               "axisColorMode": "text",
               "axisLabel": "",
@@ -1953,6 +1924,7 @@
                 "tooltip": false,
                 "viz": false
               },
+              "insertNulls": false,
               "lineInterpolation": "linear",
               "lineWidth": 1,
               "pointSize": 5,
@@ -2353,7 +2325,6 @@
           "y": 13
         },
         "id": 74,
-        "links": [],
         "options": {
           "legend": {
             "calcs": [],
@@ -2408,6 +2379,7 @@
               "mode": "palette-classic"
             },
             "custom": {
+              "axisBorderShow": false,
               "axisCenteredZero": false,
               "axisColorMode": "text",
               "axisLabel": "",
@@ -2421,6 +2393,7 @@
                 "tooltip": false,
                 "viz": false
               },
+              "insertNulls": false,
               "lineInterpolation": "linear",
               "lineWidth": 1,
               "pointSize": 5,
@@ -2465,7 +2438,6 @@
           "y": 13
         },
         "id": 152,
-        "links": [],
         "options": {
           "legend": {
             "calcs": [],
@@ -2500,7 +2472,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -4586,7 +4558,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -4598,7 +4570,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -10471,7 +10443,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -10483,7 +10455,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -11541,7 +11513,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -11553,7 +11525,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -12067,7 +12039,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -12079,7 +12051,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -12972,7 +12944,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -12984,7 +12956,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -14261,7 +14233,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -14273,7 +14245,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -14724,7 +14696,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -14736,7 +14708,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -15084,7 +15056,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -15096,7 +15068,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -18456,7 +18428,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -18468,7 +18440,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -19070,7 +19042,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -19082,7 +19054,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -21132,7 +21104,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -21144,7 +21116,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -21795,7 +21767,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -21807,7 +21779,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -21863,8 +21835,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -21993,8 +21964,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -22097,8 +22067,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -22226,8 +22195,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -22342,8 +22310,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -22483,8 +22450,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -22635,8 +22601,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -22779,8 +22744,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -22967,8 +22931,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -23106,8 +23069,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -23252,8 +23214,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -23370,8 +23331,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     }
                   ]
                 },
@@ -23478,7 +23438,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -23490,7 +23450,7 @@
         "collapsed": true,
         "datasource": {
           "type": "prometheus",
-          "uid": "000000001"
+          "uid": "ims-prom"
         },
         "gridPos": {
           "h": 1,
@@ -23750,7 +23710,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "000000001"
+              "uid": "ims-prom"
             },
             "refId": "A"
           }
@@ -23761,8 +23721,7 @@
     ],
     "refresh": "1m",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "dark",
+    "schemaVersion": 39,
     "tags": [
       "linux"
     ],
@@ -23771,8 +23730,8 @@
         {
           "current": {
             "selected": false,
-            "text": "default",
-            "value": "default"
+            "text": "Prometheus",
+            "value": "ims-prom"
           },
           "hide": 0,
           "includeAll": false,
@@ -23788,7 +23747,11 @@
           "type": "datasource"
         },
         {
-          "current": {},
+          "current": {
+            "selected": false,
+            "text": "kubernetes-service-endpoints",
+            "value": "kubernetes-service-endpoints"
+          },
           "datasource": {
             "type": "prometheus",
             "uid": "ims-prom"
@@ -23814,7 +23777,11 @@
           "useTags": false
         },
         {
-          "current": {},
+          "current": {
+            "selected": false,
+            "text": "192.168.65.3:9100",
+            "value": "192.168.65.3:9100"
+          },
           "datasource": {
             "type": "prometheus",
             "uid": "ims-prom"
@@ -23863,7 +23830,7 @@
       ]
     },
     "time": {
-      "from": "now-24h",
+      "from": "now-15m",
       "to": "now"
     },
     "timepicker": {
@@ -23894,6 +23861,6 @@
     "timezone": "browser",
     "title": "Node Exporter Full",
     "uid": "rYdddlPWk",
-    "version": 92,
+    "version": 1,
     "weekStart": ""
   }
