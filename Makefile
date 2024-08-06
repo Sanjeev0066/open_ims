@@ -16,6 +16,12 @@ ${GREEN_BOLD}Master Makefile${END}
 
 	- grafana-ui: Open Grafana UI on browser (http://localhost/grafana) user: ${BLUE_BOLD}admin${END} pass: ${BLUE_BOLD}admin${END}
 
+	- prometheus-ui: Open Grafana UI on browser (http://localhost/grafana) 
+
+	- install-helm-quick: A from-the-docs 1 line to install helm. Can be run many times to re-install latest versions. (curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash)
+	
+	- install-skaffold-quick: A from-the-docs 1 line to install skaffold. Can be run many times to re-install latest versions. (the executable used to actually install Skaffold is rm -rf'ed after the install is complete)
+
 
 	${ORANGE_BOLD}- TODO:${END}
 		Update Secret/Config Map propogation method (Look into something like https://github.com/stakater/Reloader to ensure pods restart after secret updates)
@@ -56,6 +62,22 @@ dev:
 pgadmin-ui:
 	explorer.exe "http://localhost:30007" & 
 .PHONY: pgadmin-ui
+
+prometheus-ui:
+	explorer.exe "http://localhost/prometheus" & 
+.PHONY: prometheus-ui
+
+install-helm-quick:
+	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+	helm version 
+.PHONY: install-helm-quick
+
+install-skaffold-quick:
+	curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
+	sudo install skaffold /usr/local/bin/
+	rm -rf ./skaffold
+	skaffold version
+.PHONY: install-skaffold-quick
 
 grafana-ui:
 	explorer.exe "http://localhost/grafana" & 

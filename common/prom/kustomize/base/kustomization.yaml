@@ -1,0 +1,6 @@
+resources:
+  - prom-cluster-role.yaml
+  - prom-role-binding.yaml
+  - prom-persistent-volume-claim.yaml
+  - prom-cluster-ip-service.yaml
+  - prom-deployment.yaml

@@ -1,4 +1,4 @@
-apiVersion: skaffold/v4beta6
+apiVersion: skaffold/v4beta11
 kind: Config
 
 metadata:
@@ -14,6 +14,7 @@ profiles:
         - ./common/rbac/
         - ./common/ingress/overlays/dev
         - ./common/pgadmin/overlays/dev
+        - ./common/prom/kustomize/overlays/dev
         - ./common/grafana/kustomize/base
         - ./common/database/kustomize/overlays/dev
         - ./microservices/server/kustomize/overlays/dev
@@ -92,16 +93,27 @@ profiles:
               --file "${BUILD_CONTEXT}/Dockerfile" \
               --tag "${IMAGE}" \
               "${BUILD_CONTEXT}"
-        # sync:
-        #   manual:
-        #     - src: "index.js"
-        #       dest: .
-        #     - src: "database.json"
-        #       dest: .
-        #     - src: "migrations/**/*.js"
-        #       dest: .
-        #     - src: "migrations/**/*.sql"
-        #       dest: .
+  deploy:
+    helm:
+        releases:
+          - name: kube-state-metrics
+            remoteChart: kube-state-metrics
+            version: 5.25.1
+            namespace: kube-system
+            # wait: true
+            upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
+          
+          - name: node-exporter
+            remoteChart: prometheus-node-exporter
+            version: 4.37.1
+            namespace: monitoring
+            # wait: true
+            upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
+
+    kubectl: {}
+
       
 - name: prod-local
   manifests:

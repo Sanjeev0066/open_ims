@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prom-cluster-ip-service
+  namespace: monitoring
+spec:
+  type: ClusterIP
+  selector:
+    app: prometheus-server
+  ports:
+    - port: 9090
+      protocol: TCP
+      targetPort: 9090
+  sessionAffinity: None
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prom-external
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: prom-cluster-ip-service.monitoring.svc.cluster.local

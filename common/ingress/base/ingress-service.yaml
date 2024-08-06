@@ -30,11 +30,13 @@ spec:
             name: grafana-cluster-ip-service
             port:
               number: 3002
-      # - path: /pgadmin
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: pgadmin-service
-      #       port:
-      #         number: 9000
+      # ? Because prometheus is running in a different namespace, we need to create an externalService (prom-external) that can be reached from ingress-nginx in the default namespace
+      - path: /prometheus
+        pathType: Prefix
+        backend:
+          service:
+            name: prom-external
+            port:
+              number: 9090
+              
   ingressClassName: nginx
