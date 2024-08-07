@@ -64,7 +64,7 @@ echo -e "\nRemoving any (old) existing config objects are deleted before creatin
 kubectl delete secret $ENV_MODE-open-ims-secrets ; echo "$ENV_MODE-open-ims-secrets removed"
 kubectl delete configmap $ENV_MODE-open-ims-config-map ; echo "$ENV_MODE-open-ims-config-map removed" 
 kubectl delete configmap ge-config ; echo "ge-config removed" 
-kubectl delete configmap prometheus-server-conf ; echo "prometheus-server-conf removed" 
+kubectl delete configmap -n monitoring prometheus-server-conf ; echo "prometheus-server-conf removed" 
 
 echo -e "\nAttempting to create the $CYAN$ENV_MODE$END$BLUE-open-ims-secrets$END and $CYAN$ENV_MODE$END$BLUE-open-ims-config-map$END objects:\n"
 
@@ -82,7 +82,7 @@ echo -e "\nAttempting to create the $CYAN$ENV_MODE$END$BLUE-open-ims-secrets$END
     # TODO For local deployment when configs are updated
     # TODO Secrets and configs (like the ones created before as well) need to start being able to be updated automatically or we risk bringing down prod lol
     # kubectl create configmap ge-config --from-file=../common/grafana/kustomize/overlays/prod/grafana.ini --from-file=../common/grafana/kustomize/overlays/prod/psql-datasource.yaml --from-file=../common/grafana/kustomize/overlays/prod/default.yaml --from-file=../common/grafana/kustomize/overlays/prod/Test-1.json && \
-    kubectl create configmap ge-config --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/ --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/dashboards/ && \
+    kubectl create configmap ge-config --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/grafana.ini --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/datasources.yaml --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/default.yaml --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/dashboards/ && \
     echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN" ge-config-map"$END" for Grafana created!" && \
     
     #? Create the config-map object representing the configs for Prometheus SD and Alerting
