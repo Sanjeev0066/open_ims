@@ -235,6 +235,16 @@ profiles:
               collector.systemd: true
               collector.processes: true
 
+          - name: loki
+            remoteChart: loki-stack
+            version: 2.10.2
+            namespace: monitoring
+            wait: false
+            # upgradeOnChange: true
+            repo: https://grafana.github.io/helm-charts
+            setValues:
+              loki.image.tag: 2.9.9
+
       kubectl: {}
 
   - name: prod-do
@@ -346,6 +356,16 @@ profiles:
             setValues:
               collector.systemd: true
               collector.processes: true
+
+          - name: loki
+            remoteChart: loki-stack
+            version: 2.10.2
+            namespace: monitoring
+            wait: false
+            # upgradeOnChange: true
+            repo: https://grafana.github.io/helm-charts
+            setValues:
+              loki.image.tag: 2.9.9
 
       kubectl: {}
     # verify:
