@@ -135,8 +135,8 @@ profiles:
         paths:
           - ./common/rbac/kustomize/base
           - ./common/ingress/kustomize/overlays/prod
-          - ./common/grafana/kustomize/overlays/prod
           - ./common/prom/kustomize/overlays/prod
+          - ./common/grafana/kustomize/overlays/prod
           - ./common/database/kustomize/overlays/prod
           - ./microservices/server/kustomize/overlays/prod
           - ./microservices/client/kustomize/overlays/prod
@@ -253,6 +253,7 @@ profiles:
         paths:
           - ./common/rbac/kustomize/base
           - ./common/ingress/kustomize/overlays/prod
+          - ./common/prom/kustomize/overlays/dev
           - ./common/grafana/kustomize/overlays/prod
           - ./common/database/kustomize/overlays/prod
           - ./microservices/server/kustomize/overlays/prod
