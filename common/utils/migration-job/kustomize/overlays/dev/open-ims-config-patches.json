@@ -8,5 +8,10 @@
         "op": "replace",
         "path": "/spec/template/spec/containers/0/envFrom/1/secretRef/name",
         "value": "dev-open-ims-secrets"
+    },
+    {
+        "op": "add",
+        "path": "/spec/ttlSecondsAfterFinished",
+        "value": 10
     }
 ]
