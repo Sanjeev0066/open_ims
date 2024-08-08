@@ -138,6 +138,7 @@ jobs:
           echo "Removing entire application lol..."
           make clean
           skaffold deploy -p prod-do --build-artifacts='${{github.workspace}}/ccg-prod-tags/production-deployment-tags.json'
+          helm upgrade beyla grafana/beyla -f common/beyla/helm-beyla.yaml
           echo "JOB OUTPUT:"
           kubectl describe jobs
           
