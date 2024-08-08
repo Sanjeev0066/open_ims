@@ -87,6 +87,7 @@ grafana-ui:
 
 prod:
 	./start.sh prod
+	helm upgrade beyla grafana/beyla -f common/beyla/helm-beyla.yaml
 .PHONY: prod
 
 generate-configs-and-secrets:
