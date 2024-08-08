@@ -1,288 +1,377 @@
-apiVersion: skaffold/v4beta6
+apiVersion: skaffold/v4beta11
 kind: Config
 
 metadata:
   name: open-ims
 
 profiles:
-- name: dev
-  activation:
-    - command: dev
-  manifests:
-    kustomize:
-      paths:
-        - ./common/rbac/
-        - ./common/ingress/overlays/dev
-        - ./common/pgadmin/overlays/dev
-        - ./common/grafana/kustomize/base
-        - ./common/database/kustomize/overlays/dev
-        - ./microservices/server/kustomize/overlays/dev
-        - ./microservices/client/kustomize/overlays/dev
-        - ./common/utils/migration-job/kustomize/overlays/dev
-  build:
-    local:
-      push: false
-    # tagPolicy:
-    #   gitCommit: 
-    #     prefix: "dev-"
-    artifacts:
-      - image: fcabrera01/open-ims-client-dev
-        context: microservices/client
-        # docker:
+  - name: dev
+    activation:
+      - command: dev
+    manifests:
+      kustomize:
+        paths:
+          - ./common/rbac/kustomize/base
+          - ./common/ingress/kustomize/overlays/dev
+          - ./common/pgadmin/kustomize/overlays/dev
+          - ./common/prom/kustomize/overlays/dev
+          - ./common/grafana/kustomize/overlays/dev
+          - ./common/database/kustomize/overlays/dev
+          - ./microservices/server/kustomize/overlays/dev
+          - ./microservices/client/kustomize/overlays/dev
+          - ./common/utils/migration-job/kustomize/overlays/dev
+    build:
+      local:
+        push: false
+      # tagPolicy:
+      #   gitCommit:
+      #     prefix: "dev-"
+      artifacts:
+        - image: fcabrera01/open-ims-client-dev
+          context: microservices/client
+          # docker:
           # dockerfile: Dockerfile.dev
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely?: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile.dev" \
-              --tag "${IMAGE}" \
-              "${BUILD_CONTEXT}"
-        sync:
-          manual:
-            - src: "src/**/*.js"
-              dest: .
-            - src: "src/**/*.ts"
-              dest: .
-            - src: "src/**/*.tsx"
-              dest: .
-            - src: "src/**/*.css"
-              dest: .
-            - src: "vite.config.ts"
-              dest: .
-            - src: "src/**/*.html"
-              dest: .
-      - image: fcabrera01/open-ims-server-dev
-        context: microservices/server
-        # docker:
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely?: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile.dev" \
+                --tag "${IMAGE}" \
+                "${BUILD_CONTEXT}"
+          sync:
+            manual:
+              - src: "src/**/*.js"
+                dest: .
+              - src: "src/**/*.ts"
+                dest: .
+              - src: "src/**/*.tsx"
+                dest: .
+              - src: "src/**/*.css"
+                dest: .
+              - src: "vite.config.ts"
+                dest: .
+              - src: "src/**/*.html"
+                dest: .
+        - image: fcabrera01/open-ims-server-dev
+          context: microservices/server
+          # docker:
           # dockerfile: Dockerfile.dev
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely?: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile.dev" \
-              --tag "${IMAGE}" \
-              "${BUILD_CONTEXT}"
-        sync:
-          manual:
-            - src: "src/**/*.js"
-              dest: .
-            - src: "src/**/*.ts"
-              dest: .
-            - src: "tsconfig.json"
-              dest: .
-            - src: "index.ts"
-              dest: .
-      - image: fcabrera01/ccg-migration-job
-        context: common/utils/migration-job
-        # docker:
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely?: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile.dev" \
+                --tag "${IMAGE}" \
+                "${BUILD_CONTEXT}"
+          sync:
+            manual:
+              - src: "src/**/*.js"
+                dest: .
+              - src: "src/**/*.ts"
+                dest: .
+              - src: "tsconfig.json"
+                dest: .
+              - src: "index.ts"
+                dest: .
+        - image: fcabrera01/ccg-migration-job
+          context: common/utils/migration-job
+          # docker:
           # dockerfile: Dockerfile
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely?: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile" \
-              --tag "${IMAGE}" \
-              "${BUILD_CONTEXT}"
-        # sync:
-        #   manual:
-        #     - src: "index.js"
-        #       dest: .
-        #     - src: "database.json"
-        #       dest: .
-        #     - src: "migrations/**/*.js"
-        #       dest: .
-        #     - src: "migrations/**/*.sql"
-        #       dest: .
-      
-- name: prod-local
-  manifests:
-    kustomize:
-      paths:
-        - ./common/rbac/
-        - ./common/ingress/overlays/prod
-        - ./common/grafana/kustomize/base
-        - ./common/database/kustomize/overlays/prod
-        - ./microservices/server/kustomize/overlays/prod
-        - ./microservices/client/kustomize/overlays/prod
-        - ./common/utils/migration-job/kustomize/overlays/prod
-        # - ./common/pgadmin/overlays/dev
-  build:
-    local:
-      push: false
-      # push: true
-    tagPolicy:
-      # sha256: {}
-      gitCommit: 
-        prefix: "prod-"
-    artifacts:
-      - image: fcabrera01/ccg-client
-        context: microservices/client
-        # docker:
-        #   dockerfile: Dockerfile.staging
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile.staging" \
-              --tag "${IMAGE}" \
-              --cache-from "type=registry,ref=${IMAGE}" \
-              --cache-from "type=registry,ref=fcabrera01/ccg-client:latest-cache" \
-              --pull \
-              "${BUILD_CONTEXT}"
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely?: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile" \
+                --tag "${IMAGE}" \
+                "${BUILD_CONTEXT}"
+    deploy:
+      helm:
+        releases:
+          - name: kube-state-metrics
+            remoteChart: kube-state-metrics
+            version: 5.25.1
+            namespace: kube-system
+            # wait: true
+            # upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
 
-      - image: fcabrera01/ccg-server
-        context: microservices/server
-        # docker:
-        #   dockerfile: Dockerfile
-        #   cacheFrom:
-        #   - "fcabrera01/ccg-server:prod-latest"
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile" \
-              --tag "${IMAGE}" \
-              --cache-from "type=registry,ref=${IMAGE}" \
-              --cache-from "type=registry,ref=fcabrera01/ccg-server:latest-cache" \
-              --pull \
-              "${BUILD_CONTEXT}"
+          - name: node-exporter
+            remoteChart: prometheus-node-exporter
+            version: 4.37.1
+            namespace: monitoring
+            # wait: true
+            # upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
+            setValues:
+              collector.systemd: true
+              collector.processes: true
+          
+          - name: loki
+            remoteChart: loki-stack
+            version: 2.10.2
+            namespace: monitoring
+            wait: false
+            # upgradeOnChange: true
+            repo: https://grafana.github.io/helm-charts
+            setValues:
+              loki.image.tag: 2.9.9
 
-      - image: fcabrera01/ccg-migration-job
-        context: common/utils/migration-job
-        # docker:
-        #   dockerfile: Dockerfile
-        #   cacheFrom:
-        #   - "fcabrera01/ccg-migration-job:prod-latest"
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile" \
-              --tag "${IMAGE}" \
-              --cache-from "type=registry,ref=${IMAGE}" \
-              --cache-from "type=registry,ref=fcabrera01/ccg-migration-job:latest-cache" \
-              --pull \
-              "${BUILD_CONTEXT}"
-  # test:
-  #   - image: fcabrera01/ccg-client
-  #     structureTests:
-  #     - './structure-test/*'
+      kubectl: {}
 
-  deploy:
-    kubectl: {}
+#? The only real difference here lies with the client build, where because of how VITE handles env variables we must use a specific Dockerfile.staging
 
-- name: prod-do
-  manifests:
-    kustomize:
-      paths:
-        - ./common/rbac/
-        - ./common/ingress/overlays/prod
-        - ./common/grafana/kustomize/base
-        - ./common/database/kustomize/overlays/prod
-        - ./microservices/server/kustomize/overlays/prod
-        - ./microservices/client/kustomize/overlays/prod
-        - ./common/utils/migration-job/kustomize/overlays/prod
-  build:
-    local:
-      push: true
-      # useBuildkit: true
-    tagPolicy:
-      gitCommit: 
-        prefix: "prod-"
-    artifacts:
-      - image: fcabrera01/ccg-client
-        context: microservices/client
-        # docker:
-        #   dockerfile: Dockerfile
-        #   cacheFrom:
-        #   - "fcabrera01/ccg-client:prod-latest"
-        #   - "type=registry,ref=fcabrera01/ccg-client:prod-builder
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile" \
-              --tag "${IMAGE}" \
-              --cache-to "type=registry,ref=${IMAGE}-cache,mode=max" \
-              --cache-to "type=registry,ref=fcabrera01/ccg-client:latest-cache,mode=max" \
-              --cache-from "type=registry,ref=${IMAGE}-cache" \
-              --cache-from "type=registry,ref=fcabrera01/ccg-client:latest-cache" \
-              --push \
-              --pull \
-              "${BUILD_CONTEXT}"
+  - name: prod-local
+    manifests:
+      kustomize:
+        paths:
+          - ./common/rbac/kustomize/base
+          - ./common/ingress/kustomize/overlays/prod
+          - ./common/grafana/kustomize/overlays/prod
+          - ./common/prom/kustomize/overlays/prod
+          - ./common/database/kustomize/overlays/prod
+          - ./microservices/server/kustomize/overlays/prod
+          - ./microservices/client/kustomize/overlays/prod
+          - ./common/utils/migration-job/kustomize/overlays/prod
+          # - ./common/pgadmin/overlays/dev
+    build:
+      local:
+        push: false
+        # push: true
+      tagPolicy:
+        # sha256: {}
+        gitCommit:
+          prefix: "prod-"
+      artifacts:
+        - image: fcabrera01/ccg-client
+          context: microservices/client
+          # docker:
+          #   dockerfile: Dockerfile.staging
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile.staging" \
+                --tag "${IMAGE}" \
+                --cache-from "type=registry,ref=${IMAGE}" \
+                --cache-from "type=registry,ref=fcabrera01/ccg-client:latest-cache" \
+                --pull \
+                "${BUILD_CONTEXT}"
 
-      - image: fcabrera01/ccg-server
-        context: microservices/server
-        # docker:
-        #   dockerfile: Dockerfile
-        #   cacheFrom:
-        #   - "fcabrera01/ccg-server:prod-latest"
+        - image: fcabrera01/ccg-server
+          context: microservices/server
+          # docker:
+          #   dockerfile: Dockerfile
+          #   cacheFrom:
+          #   - "fcabrera01/ccg-server:prod-latest"
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile" \
+                --tag "${IMAGE}" \
+                --cache-from "type=registry,ref=${IMAGE}" \
+                --cache-from "type=registry,ref=fcabrera01/ccg-server:latest-cache" \
+                --pull \
+                "${BUILD_CONTEXT}"
+
+        - image: fcabrera01/ccg-migration-job
+          context: common/utils/migration-job
+          # docker:
+          #   dockerfile: Dockerfile
+          #   cacheFrom:
+          #   - "fcabrera01/ccg-migration-job:prod-latest"
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile" \
+                --tag "${IMAGE}" \
+                --cache-from "type=registry,ref=${IMAGE}" \
+                --cache-from "type=registry,ref=fcabrera01/ccg-migration-job:latest-cache" \
+                --pull \
+                "${BUILD_CONTEXT}"
+    # test:
+    #   - image: fcabrera01/ccg-client
+    #     structureTests:
+    #     - './structure-test/*'
+
+    deploy:
+      helm:
+        releases:
+          - name: kube-state-metrics
+            remoteChart: kube-state-metrics
+            version: 5.25.1
+            namespace: kube-system
+            wait: true
+            # upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
+
+          - name: node-exporter
+            remoteChart: prometheus-node-exporter
+            version: 4.37.1
+            namespace: monitoring
+            wait: true
+            # upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
+            setValues:
+              collector.systemd: true
+              collector.processes: true
+
+          - name: loki
+            remoteChart: loki-stack
+            version: 2.10.2
+            namespace: monitoring
+            wait: false
+            # upgradeOnChange: true
+            repo: https://grafana.github.io/helm-charts
+            setValues:
+              loki.image.tag: 2.9.9
+
+      kubectl: {}
+
+  - name: prod-do
+    manifests:
+      kustomize:
+        paths:
+          - ./common/rbac/kustomize/base
+          - ./common/ingress/kustomize/overlays/prod
+          - ./common/grafana/kustomize/overlays/prod
+          - ./common/database/kustomize/overlays/prod
+          - ./microservices/server/kustomize/overlays/prod
+          - ./microservices/client/kustomize/overlays/prod
+          - ./common/utils/migration-job/kustomize/overlays/prod
+    build:
+      local:
+        push: true
+        # useBuildkit: true
+      tagPolicy:
+        gitCommit:
+          prefix: "prod-"
+      artifacts:
+        - image: fcabrera01/ccg-client
+          context: microservices/client
+          # docker:
+          #   dockerfile: Dockerfile
+          #   cacheFrom:
+          #   - "fcabrera01/ccg-client:prod-latest"
+          #   - "type=registry,ref=fcabrera01/ccg-client:prod-builder
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile" \
+                --tag "${IMAGE}" \
+                --cache-to "type=registry,ref=${IMAGE}-cache,mode=max" \
+                --cache-to "type=registry,ref=fcabrera01/ccg-client:latest-cache,mode=max" \
+                --cache-from "type=registry,ref=${IMAGE}-cache" \
+                --cache-from "type=registry,ref=fcabrera01/ccg-client:latest-cache" \
+                --push \
+                --pull \
+                "${BUILD_CONTEXT}"
+
+        - image: fcabrera01/ccg-server
+          context: microservices/server
+          # docker:
+          #   dockerfile: Dockerfile
+          #   cacheFrom:
+          #   - "fcabrera01/ccg-server:prod-latest"
           # - "type=registry,ref=fcabrera01/ccg-server:prod-builder"
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile" \
-              --tag "${IMAGE}" \
-              --cache-to "type=registry,ref=${IMAGE}-cache,mode=max" \
-              --cache-to "type=registry,ref=fcabrera01/ccg-server:latest-cache,mode=max" \
-              --cache-from "type=registry,ref=${IMAGE}-cache" \
-              --cache-from "type=registry,ref=fcabrera01/ccg-server:latest-cache" \
-              --push \
-              --pull \
-              "${BUILD_CONTEXT}"
-      - image: fcabrera01/ccg-migration-job
-        context: common/utils/migration-job
-        # docker:
-        #   dockerfile: Dockerfile
-        #   cacheFrom:
-        #   - "fcabrera01/ccg-migration-job:prod-latest"
-        custom:
-          buildCommand: |
-            echo
-            echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
-            echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
-            echo
-            docker buildx build \
-              --file "${BUILD_CONTEXT}/Dockerfile" \
-              --tag "${IMAGE}" \
-              --cache-to "type=registry,ref=${IMAGE}-cache,mode=max" \
-              --cache-to "type=registry,ref=fcabrera01/ccg-migration-job:latest-cache,mode=max" \
-              --cache-from "type=registry,ref=${IMAGE}-cache" \
-              --cache-from "type=registry,ref=fcabrera01/ccg-migration-job:latest-cache" \
-              --push \
-              --pull \
-              "${BUILD_CONTEXT}"
-  deploy:
-    kubectl: {}
-  # verify:
-  #   - name: alpine-wget
-  #     container:
-  #       name: alpine-wget
-  #       image: alpine:3.15.4
-  #       command: ["/bin/sh"]
-  #       args: ["-c", "wget http://localhost/api/server/testmsg"]
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile" \
+                --tag "${IMAGE}" \
+                --cache-to "type=registry,ref=${IMAGE}-cache,mode=max" \
+                --cache-to "type=registry,ref=fcabrera01/ccg-server:latest-cache,mode=max" \
+                --cache-from "type=registry,ref=${IMAGE}-cache" \
+                --cache-from "type=registry,ref=fcabrera01/ccg-server:latest-cache" \
+                --push \
+                --pull \
+                "${BUILD_CONTEXT}"
+        - image: fcabrera01/ccg-migration-job
+          context: common/utils/migration-job
+          # docker:
+          #   dockerfile: Dockerfile
+          #   cacheFrom:
+          #   - "fcabrera01/ccg-migration-job:prod-latest"
+          custom:
+            buildCommand: |
+              echo
+              echo "Building '${IMAGE}' with context '${BUILD_CONTEXT}"
+              echo "Image is expected to exist remotely: ${PUSH_IMAGE}"
+              echo
+              docker buildx build \
+                --file "${BUILD_CONTEXT}/Dockerfile" \
+                --tag "${IMAGE}" \
+                --cache-to "type=registry,ref=${IMAGE}-cache,mode=max" \
+                --cache-to "type=registry,ref=fcabrera01/ccg-migration-job:latest-cache,mode=max" \
+                --cache-from "type=registry,ref=${IMAGE}-cache" \
+                --cache-from "type=registry,ref=fcabrera01/ccg-migration-job:latest-cache" \
+                --push \
+                --pull \
+                "${BUILD_CONTEXT}"
+    deploy:
+      helm:
+        releases:
+          - name: kube-state-metrics
+            remoteChart: kube-state-metrics
+            version: 5.25.1
+            namespace: kube-system
+            wait: true
+            # upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
+
+          - name: node-exporter
+            remoteChart: prometheus-node-exporter
+            version: 4.37.1
+            namespace: monitoring
+            wait: true
+            # upgradeOnChange: true
+            repo: https://prometheus-community.github.io/helm-charts
+            setValues:
+              collector.systemd: true
+              collector.processes: true
+
+          - name: loki
+            remoteChart: loki-stack
+            version: 2.10.2
+            namespace: monitoring
+            wait: false
+            # upgradeOnChange: true
+            repo: https://grafana.github.io/helm-charts
+            setValues:
+              loki.image.tag: 2.9.9
+
+      kubectl: {}
+    # verify:
+    #   - name: alpine-wget
+    #     container:
+    #       name: alpine-wget
+    #       image: alpine:3.15.4
+    #       command: ["/bin/sh"]
+    #       args: ["-c", "wget http://localhost/api/server/testmsg"]

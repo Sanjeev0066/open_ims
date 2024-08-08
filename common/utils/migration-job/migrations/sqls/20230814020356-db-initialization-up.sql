@@ -488,7 +488,7 @@ VALUES
   GROUP BY c.id, series;
 
 
-  -- Insert addresses for customers
+  -- Insert addresses for customerss
   INSERT INTO customer_addresses (customer_id, address, customer_address_name, street_address_line1, street_address_line2, city, province, postal, country)
   VALUES
   (1, 'Shipping', 'Howard', '123 Main St', 'Apt 1', 'CustomerCityA', 'CustomerProvinceA', '12345', 'CustomerCountryA'),

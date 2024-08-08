@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prom-persistent-volume-claim
+  namespace: monitoring
+spec:
+  resources:
+    requests:
+      storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  # storageClassName: defaults to local or do-block-storage

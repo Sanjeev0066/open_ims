@@ -19,7 +19,8 @@ Our development stack consists of:
     </ul>
     <li>Kubernetes v1.27.0 <em>or greater</em></li>
   </ul>
-  <li><a href="https://skaffold.dev/">Skaffold</a> v2.6.0 </li>
+  <li><a href="https://skaffold.dev/">Skaffold</a> v2.13.0 </li>
+  <li><a href="https://helm.sh/docs/intro/install/">Helm</a> v3.12.2 </li>
   <li><a href="https://kustomize.io/">Kustomize</a> v5.0.1 <strong>(**NOTE** this is already shipped with the recommended install version of kubernetes/kubectl above, so only download this if you know that you require it!)</strong> </li>
 </ul>
 
