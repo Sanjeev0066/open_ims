@@ -101,5 +101,5 @@ ms-image-clean:
 .PHONY: ms-image-clean
 
 clean:
-	skaffold delete ; skaffold delete -p prod-local ; skaffold delete -p dev ;  skaffold delete -p prod-do
+	(skaffold delete ; skaffold delete -p prod-local ; skaffold delete -p dev ;  skaffold delete -p prod-do) ; echo "finised cleaning up.."
 .PHONY: clean

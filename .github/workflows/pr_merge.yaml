@@ -135,9 +135,10 @@ jobs:
       - name: Deploy to DigitalOcean Kubernetes
         run: |
           cd ${{github.workspace}}/main
-          echo "Manually clearing previous migration job!"
+          echo "Removing entire application lol..."
           make clean
-          kubectl delete job prod-migration-job
+          echo "Manually clearing previous migration job!"
+          kubectl delete job prod-migration-job ; echo "No job to clean up! Deploying application"
           skaffold deploy -p prod-do --build-artifacts='${{github.workspace}}/ccg-prod-tags/production-deployment-tags.json'
           echo "JOB OUTPUT:"
           kubectl describe jobs
