@@ -21,6 +21,8 @@ ${GREEN_BOLD}Master Makefile${END}
 	- install-helm-quick: A from-the-docs 1 line to install helm. Can be run many times to re-install latest versions. (curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash)
 	
 	- install-skaffold-quick: A from-the-docs 1 line to install skaffold. Can be run many times to re-install latest versions. (the executable used to actually install Skaffold is rm -rf'ed after the install is complete)
+	
+	- generate-configs-and-secrets: A way to generate the required prod/dev configmaps required to run the application (Can also be used to "refresh" configs before new deployments)
 
 
 	${ORANGE_BOLD}- TODO:${END}
@@ -86,6 +88,10 @@ grafana-ui:
 prod:
 	./start.sh prod
 .PHONY: prod
+
+generate-configs-and-secrets:
+	./scripts/create-secrets-and-config-map.sh prod
+.PHONY: generate-configs-and-secrets
 
 ms-image-clean:
 	@echo "Cleaning any open-ims server and client images!"
