@@ -137,8 +137,6 @@ jobs:
           cd ${{github.workspace}}/main
           echo "Removing entire application lol..."
           make clean
-          echo "Manually clearing previous migration job!"
-          kubectl delete job prod-migration-job ; echo "No job to clean up! Deploying application"
           skaffold deploy -p prod-do --build-artifacts='${{github.workspace}}/ccg-prod-tags/production-deployment-tags.json'
           echo "JOB OUTPUT:"
           kubectl describe jobs
