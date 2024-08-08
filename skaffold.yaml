@@ -115,19 +115,19 @@ profiles:
               collector.systemd: true
               collector.processes: true
           
-          - name: beyla
-            remoteChart: beyla
-            version: 1.3.0
-            namespace: monitoring
-            wait: false
-            # upgradeOnChange: true
-            repo: https://grafana.github.io/helm-charts
-            # setValueTemplates:
-            #   podAnnotations: {
-            #     prometheus.io/scrape: "true",
-            #     prometheus.io/path: "/metrics",
-            #     prometheus.io/port: "9090"
-            #   }
+          # - name: beyla
+          #   remoteChart: beyla
+          #   version: 1.3.0
+          #   namespace: monitoring
+          #   wait: false
+          #   # upgradeOnChange: true
+          #   repo: https://grafana.github.io/helm-charts
+          #   # setValueTemplates:
+          #   #   podAnnotations: {
+          #   #     prometheus.io/scrape: "true",
+          #   #     prometheus.io/path: "/metrics",
+          #   #     prometheus.io/port: "9090"
+          #   #   }
           
           - name: loki
             remoteChart: loki-stack
@@ -250,13 +250,13 @@ profiles:
               collector.systemd: true
               collector.processes: true
 
-          - name: beyla
-            remoteChart: beyla
-            version: 1.3.0
-            namespace: monitoring
-            wait: false
-            # upgradeOnChange: true
-            repo: https://grafana.github.io/helm-charts
+          # - name: beyla
+          #   remoteChart: beyla
+          #   version: 1.3.0
+          #   namespace: monitoring
+          #   wait: false
+          #   # upgradeOnChange: true
+          #   repo: https://grafana.github.io/helm-charts
 
           - name: loki
             remoteChart: loki-stack
@@ -380,14 +380,14 @@ profiles:
             setValues:
               collector.systemd: true
               collector.processes: true
-
-          - name: beyla
-            remoteChart: beyla
-            version: 1.3.0
-            namespace: monitoring
-            wait: false
-            # upgradeOnChange: true
-            repo: https://grafana.github.io/helm-charts
+          #? Our servers are too weak to run beyla in prod :( LOL
+          # - name: beyla
+          #   remoteChart: beyla
+          #   version: 1.3.0
+          #   namespace: monitoring
+          #   wait: false
+          #   # upgradeOnChange: true
+          #   repo: https://grafana.github.io/helm-charts
 
           - name: loki
             remoteChart: loki-stack
