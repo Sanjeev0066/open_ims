@@ -139,7 +139,7 @@ jobs:
           make clean
 
           kubectl delete configmap ge-config ; echo "ge-config removed" 
-          kubectl create configmap ge-config --from-file=/common/grafana/kustomize/overlays/prod/grafana.ini --from-file=/common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=/common/grafana/kustomize/overlays/prod/default.yaml --from-file=/common/grafana/kustomize/overlays/prod/dashboards/
+          kubectl create configmap ge-config --from-file=common/grafana/kustomize/overlays/prod/grafana.ini --from-file=common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=common/grafana/kustomize/overlays/prod/default.yaml --from-file=common/grafana/kustomize/overlays/prod/dashboards/
 
           skaffold deploy -p prod-do --build-artifacts='${{github.workspace}}/ccg-prod-tags/production-deployment-tags.json'
 
