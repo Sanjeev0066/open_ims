@@ -139,14 +139,14 @@ jobs:
           make clean
 
       - name: Re-deploy configs
-        continue-on-error: true
+        # continue-on-error: true
         run: |
           cd ${{github.workspace}}/main
 
           kubectl delete configmap ge-config || :
           kubectl create configmap ge-config --from-file=common/grafana/kustomize/overlays/prod/grafana.ini --from-file=common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=common/grafana/kustomize/overlays/prod/default.yaml --from-file=common/grafana/kustomize/overlays/prod/dashboards/
 
-          kubectl delete configmap -n prometheus-server-conf || :
+          kubectl delete configmap -n monitoring prometheus-server-conf || :
           kubectl create -f common/prom/kustomize/overlays/prod/prom-config-map.yaml
           
           kubectl delete configmap prod-open-ims-config-map || :
