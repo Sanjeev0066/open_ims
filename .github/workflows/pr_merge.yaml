@@ -137,9 +137,17 @@ jobs:
           cd ${{github.workspace}}/main
           echo "Removing entire application lol..."
           make clean
+
+          kubectl delete configmap ge-config ; echo "ge-config removed" 
+          kubectl create configmap ge-config --from-file=/common/grafana/kustomize/overlays/prod/grafana.ini --from-file=/common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=/common/grafana/kustomize/overlays/prod/default.yaml --from-file=/common/grafana/kustomize/overlays/prod/dashboards/
+
           skaffold deploy -p prod-do --build-artifacts='${{github.workspace}}/ccg-prod-tags/production-deployment-tags.json'
+
+          #? Not deployin beyla because of our weak servers LOL
           # helm repo add grafana https://grafana.github.io/helm-charts
           # helm upgrade beyla -n monitoring grafana/beyla -f common/beyla/helm-beyla.yaml
+          
+
           echo "JOB OUTPUT:"
           kubectl describe jobs
           
