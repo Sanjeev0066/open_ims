@@ -139,6 +139,7 @@ jobs:
           make clean
 
       - name: Re-deploy configs
+        continue-on-error: true
         run: |
           cd ${{github.workspace}}/main
 
