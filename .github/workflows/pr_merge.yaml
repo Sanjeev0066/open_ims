@@ -143,13 +143,13 @@ jobs:
         run: |
           cd ${{github.workspace}}/main
 
-          kubectl delete configmap ge-config ; echo "ge-config removed" 
+          kubectl delete configmap ge-config || :
           kubectl create configmap ge-config --from-file=common/grafana/kustomize/overlays/prod/grafana.ini --from-file=common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=common/grafana/kustomize/overlays/prod/default.yaml --from-file=common/grafana/kustomize/overlays/prod/dashboards/
 
-          kubectl delete configmap -n prometheus-server-conf ; echo "-n prometheus-server-conf removed" 
+          kubectl delete configmap -n prometheus-server-conf || :
           kubectl create -f common/prom/kustomize/overlays/prod/prom-config-map.yaml
           
-          kubectl delete configmap prod-open-ims-config-map ; echo "prod-open-ims-config-map removed" 
+          kubectl delete configmap prod-open-ims-config-map || :
           kubectl create configmap prod-open-ims-config-map --from-env-file=common/config/prod/.env
 
       - name: Deploy to DigitalOcean Kubernetes
