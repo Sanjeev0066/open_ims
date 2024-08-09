@@ -132,11 +132,11 @@ jobs:
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-ccg-ims
 
-      - name: Remove old application (Temporary for development setup....)
-        run: |
-          cd ${{github.workspace}}/main
+      # - name: Remove old application (Temporary for development setup....)
+      #   run: |
+      #     cd ${{github.workspace}}/main
 
-          make clean
+      #     make clean
 
       - name: Re-deploy configs
         # continue-on-error: true
@@ -144,13 +144,13 @@ jobs:
           cd ${{github.workspace}}/main
 
           # kubectl delete configmap ge-config || :
-          kubectl create configmap ge-config --from-file=common/grafana/kustomize/overlays/prod/grafana.ini --from-file=common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=common/grafana/kustomize/overlays/prod/default.yaml --from-file=common/grafana/kustomize/overlays/prod/dashboards/ -o yaml --dry-run=client | kubectl apply -f -
+          kubectl create configmap ge-config --from-file=common/grafana/kustomize/overlays/prod/grafana.ini --from-file=common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=common/grafana/kustomize/overlays/prod/default.yaml --from-file=common/grafana/kustomize/base/dashboards/ -o yaml --dry-run=client | kubectl replace --force -f -
 
           # kubectl delete configmap -n monitoring prometheus-server-conf || :
-          kubectl create -f common/prom/kustomize/overlays/prod/prom-config-map.yaml -o yaml --dry-run=client | kubectl apply -f -
+          kubectl create -f common/prom/kustomize/overlays/prod/prom-config-map.yaml -o yaml --dry-run=client | kubectl replace --force -f -
           
           # kubectl delete configmap prod-open-ims-config-map || :
-          kubectl create configmap prod-open-ims-config-map --from-env-file=common/config/prod/.env -o yaml --dry-run=client | kubectl apply -f -
+          kubectl create configmap prod-open-ims-config-map --from-env-file=common/config/prod/.env -o yaml --dry-run=client | kubectl replace --force -f -
 
       - name: Deploy to DigitalOcean Kubernetes
         run: |
