@@ -132,25 +132,37 @@ jobs:
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-ccg-ims
 
-      - name: Deploy to DigitalOcean Kubernetes
+      - name: Remove old application (Temporary for development setup....)
         run: |
           cd ${{github.workspace}}/main
-          echo "Removing entire application lol..."
+
           make clean
+
+      - name: Re-deploy configs
+        continue-on-error: true
+        run: |
+          cd ${{github.workspace}}/main
 
           kubectl delete configmap ge-config ; echo "ge-config removed" 
           kubectl create configmap ge-config --from-file=common/grafana/kustomize/overlays/prod/grafana.ini --from-file=common/grafana/kustomize/overlays/prod/datasources.yaml --from-file=common/grafana/kustomize/overlays/prod/default.yaml --from-file=common/grafana/kustomize/overlays/prod/dashboards/
+
+          kubectl delete configmap -n prometheus-server-conf ; echo "-n prometheus-server-conf removed" 
+          kubectl create -f common/prom/kustomize/overlays/prod/prom-config-map.yaml
+          
+          kubectl delete configmap prod-open-ims-config-map ; echo "prod-open-ims-config-map removed" 
+          kubectl create configmap prod-open-ims-config-map --from-env-file=common/config/prod/.env
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: |
+          cd ${{github.workspace}}/main
 
           skaffold deploy -p prod-do --build-artifacts='${{github.workspace}}/ccg-prod-tags/production-deployment-tags.json'
 
           #? Not deployin beyla because of our weak servers LOL
           # helm repo add grafana https://grafana.github.io/helm-charts
-          # helm upgrade beyla -n monitoring grafana/beyla -f common/beyla/helm-beyla.yaml
-          
+          # helm upgrade install -n monitoring grafana/beyla -f common/beyla/helm-beyla.yaml
 
-          echo "JOB OUTPUT:"
-          kubectl describe jobs
-          
+
       #? We should look into verifying the deployments after, this way we can also roll-back on deployments perhaps...
       # - name: Verify deployment
       #   run: kubectl rollout status deployment/appname -n appname
