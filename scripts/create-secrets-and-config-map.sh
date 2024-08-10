@@ -57,37 +57,34 @@ else
     cp -p -n $SCRIPT_DIR/../common/config/.secrets.template.env $SCRIPT_DIR/../common/config/dev/.secrets.env
 fi
 
-echo -e "\nRemove old namespace"
-kubectl delete namespace monitoring ; kubectl create namespace monitoring && echo -e $GREEN_BOLD"Monitoring namespace successfully created!"$END
+# echo -e "\nRemoving any (old) existing config objects are deleted before creating new ones (avoiding updates to the configmaps!)"
+# kubectl delete secret $ENV_MODE-open-ims-secrets ; echo "$ENV_MODE-open-ims-secrets removed"
+# kubectl delete configmap $ENV_MODE-open-ims-config-map ; echo "$ENV_MODE-open-ims-config-map removed" 
+# kubectl delete configmap ge-config ; echo "ge-config removed" 
+# kubectl delete configmap -n monitoring prometheus-server-conf ; echo "prometheus-server-conf removed" 
 
-echo -e "\nRemoving any (old) existing config objects are deleted before creating new ones (avoiding updates to the configmaps!)"
-kubectl delete secret $ENV_MODE-open-ims-secrets ; echo "$ENV_MODE-open-ims-secrets removed"
-kubectl delete configmap $ENV_MODE-open-ims-config-map ; echo "$ENV_MODE-open-ims-config-map removed" 
-kubectl delete configmap ge-config ; echo "ge-config removed" 
-kubectl delete configmap -n monitoring prometheus-server-conf ; echo "prometheus-server-conf removed" 
-
-echo -e "\nAttempting to create the $CYAN$ENV_MODE$END$BLUE-open-ims-secrets$END and $CYAN$ENV_MODE$END$BLUE-open-ims-config-map$END objects:\n"
+echo -e "\nAttempting to update the open ims secrets and configs!:\n"
 
 
 { # try
     #? Create the open-ims-secret object for the env the app is being launched in
-    kubectl create secret generic $ENV_MODE-open-ims-secrets --from-env-file=$SCRIPT_DIR/../common/config/$ENV_MODE/.secrets.env && \
-    echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN$ENV_MODE$END"-open-ims-secrets created!\n" && \
+    kubectl create secret generic $ENV_MODE-open-ims-secrets --from-env-file=$SCRIPT_DIR/../common/config/$ENV_MODE/.secrets.env -o yaml --dry-run=client | kubectl replace --force -f - && \
+    echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN$ENV_MODE$END"-open-ims-secrets updated!\n" && \
 
     #? Create the open-ims-config-map object for the env the app is being launched in
-    kubectl create configmap $ENV_MODE-open-ims-config-map --from-env-file=$SCRIPT_DIR/../common/config/$ENV_MODE/.env && \
-    echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN$ENV_MODE$END"-open-ims-config-map created!" && \
+    kubectl create configmap $ENV_MODE-open-ims-config-map --from-env-file=$SCRIPT_DIR/../common/config/$ENV_MODE/.env -o yaml --dry-run=client | kubectl replace --force -f - && \
+    echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN$ENV_MODE$END"-open-ims-config-map updated!\n" && \
     
     #? Create the config-map object representing the config for the Grafana instance
     # TODO For local deployment when configs are updated
-    # TODO Secrets and configs (like the ones created before as well) need to start being able to be updated automatically or we risk bringing down prod lol
+    # TODO Secrets and configs (like the ones updated before as well) need to start being able to be updated automatically or we risk bringing down prod lol
     # kubectl create configmap ge-config --from-file=../common/grafana/kustomize/overlays/prod/grafana.ini --from-file=../common/grafana/kustomize/overlays/prod/psql-datasource.yaml --from-file=../common/grafana/kustomize/overlays/prod/default.yaml --from-file=../common/grafana/kustomize/overlays/prod/Test-1.json && \
-    kubectl create configmap ge-config --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/grafana.ini --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/datasources.yaml --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/default.yaml --from-file=$SCRIPT_DIR/../common/grafana/kustomize/base/dashboards/ && \
-    echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN" ge-config-map"$END" for Grafana created!" && \
+    kubectl create configmap ge-config --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/grafana.ini --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/datasources.yaml --from-file=$SCRIPT_DIR/../common/grafana/kustomize/overlays/$ENV_MODE/default.yaml --from-file=$SCRIPT_DIR/../common/grafana/kustomize/base/dashboards/ -o yaml --dry-run=client | kubectl replace --force -f - && \
+    echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN" ge-config-map"$END" for Grafana updated!" && \
     
     #? Create the config-map object representing the configs for Prometheus SD and Alerting
-    kubectl create -f $SCRIPT_DIR/../common/prom/kustomize/overlays/$ENV_MODE/prom-config-map.yaml && \
-    echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN" prometheus-server-conf"$END" for Prometheus created!" && \
+    # kubectl create -f $SCRIPT_DIR/../common/prom/kustomize/overlays/$ENV_MODE/prom-config-map.yaml && \
+    # echo -e $GREEN_BOLD"   SUCCESS: "$END$CYAN" prometheus-server-conf"$END" for Prometheus created!" && \
     
     #? Cool it all worked! We should be ready to launch the app....
 

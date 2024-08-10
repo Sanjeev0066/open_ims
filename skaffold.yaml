@@ -108,6 +108,7 @@ profiles:
             remoteChart: prometheus-node-exporter
             version: 4.37.1
             namespace: monitoring
+            createNamespace: true
             # wait: true
             # upgradeOnChange: true
             repo: https://prometheus-community.github.io/helm-charts
@@ -243,6 +244,7 @@ profiles:
             remoteChart: prometheus-node-exporter
             version: 4.37.1
             namespace: monitoring
+            createNamespace: true
             wait: true
             # upgradeOnChange: true
             repo: https://prometheus-community.github.io/helm-charts
@@ -374,6 +376,7 @@ profiles:
             remoteChart: prometheus-node-exporter
             version: 4.37.1
             namespace: monitoring
+            createNamespace: true
             wait: true
             # upgradeOnChange: true
             repo: https://prometheus-community.github.io/helm-charts
