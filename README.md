@@ -23,7 +23,7 @@ Our development stack consists of:
   <li><a href="https://helm.sh/docs/intro/install/">Helm</a> recommended v3.12.2 </li>
 </ul>
 
-To run, lets first make sure that:
+To run, lets first make sure that: <br>
 1. Kubernetes is enabled in your Docker Desktop settings. The command ```kubectl get nodes``` should show a single node called ```docker-desktop```.
 2. Skaffold is installed on your machine and in your sys PATH. The command ```skaffold version``` should output a version _greater than_ ```v2.10.0```.
     <br>a. There is a command you can run, ```make install-skaffold-quick``` that should install Skaffold (and remove a previous installation) at an acceptable version.
