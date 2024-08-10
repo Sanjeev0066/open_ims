@@ -7,7 +7,7 @@ An Inventory Management System (IMS) designed and built for the Christensen Cons
 Our new [Linux Setup Instructions](https://github.com/ferncabrera/open_ims/blob/dev-oliver/Linux.md)!
 
 
-## Windows Installation Instructions (Encourage use of WSL2)
+## *PREFERRED METHOD* Windows(WSL2)/Mac Setup Instructions/Pre-requisite steps
 ### Pre-requisites
 Our development stack consists of:
 <ul>
@@ -19,25 +19,20 @@ Our development stack consists of:
     </ul>
     <li>Kubernetes v1.27.0 <em>or greater</em></li>
   </ul>
-  <li><a href="https://skaffold.dev/">Skaffold</a> v2.13.0 </li>
-  <li><a href="https://helm.sh/docs/intro/install/">Helm</a> v3.12.2 </li>
-  <li><a href="https://kustomize.io/">Kustomize</a> v5.0.1 <strong>(**NOTE** this is already shipped with the recommended install version of kubernetes/kubectl above, so only download this if you know that you require it!)</strong> </li>
+  <li><a href="https://skaffold.dev/">Skaffold</a> recommended v2.13.0 </li>
+  <li><a href="https://helm.sh/docs/intro/install/">Helm</a> recommended v3.12.2 </li>
 </ul>
 
-To run, lets first make sure that Kubernetes is enabled in the Docker settings. The command ```kubectl get nodes``` should show a single node called ```docker-desktop```.
-This application requires your Kubernetes cluster to have the <a href="https://kubernetes.github.io/ingress-nginx/deploy/#quick-start">ingress-nginx</a> controller installed. You can follow the installation steps on the website to get the latest rawYaml or simply run (the version I have):
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
-```
-After it has finished setting up, you are ready to start up the application!
+To run, lets first make sure that:
+1. Kubernetes is enabled in your Docker Desktop settings. The command ```kubectl get nodes``` should show a single node called ```docker-desktop```.
+2. Skaffold is installed on your machine and in your sys PATH. The command ```skaffold version``` should output a version _greater than_ ```v2.10.0```.
+    a. There is a command you can run, ```make install-skaffold-quick``` that should install Skaffold (and remove a previous installation) at an acceptable version.
+3. Helm is installed on your machine and in your sys PATH. The command ```helm version``` should ouput text indication a version _greater than_ ```Version:"v3.10.0"```.
+    a. There is a command you can run, ```make install-helm-quick``` which should install Helm at an acceptable version.
+
 
 ### Development
 #### Starting the dev env
-_Confirm that you have the ingress-nginx service running or else application startup will fail!_ If you are not sure whether they are running, you can check by running ```docker container ls``` and you should see an output similar to the image below:
-
-<img width="469" alt="image" src="https://github.com/ferncabrera/open_ims/assets/73137447/a2a8d465-c30a-4f80-a350-d77316209fda">
-
-If you don't see this or are not sure if it is running, just re-run the command in the <a href="https://github.com/ferncabrera/open_ims/blob/main/README.md#pre-requisites">Pre-requisites section</a> used to set up ingress-nginx.
 
 Now that you are ready, in the root of the project run: 
 ```sh
@@ -52,7 +47,7 @@ Optionally, you can use our new Makefile commands to do the same:
 make dev # Same functionality as above \
 make prod # Same functionality as above \
 ```
-*__New:__* Run ```make help``` to see the catalogue of new commands you can use as well!
+*__New:__* Run ```make help``` to see the catalogue of new commands you can use as well! (Commands here can be used to reset configurations etc!)
 
 <strong>The terminal should now be streaming logs.</strong> If an error is encountered during startup, the script will attempt to clean up any created resources and then exit. 
 <br/>
@@ -86,12 +81,6 @@ skaffold -p prod-do --tail
 ```
 This will start the _prod-do_ profile of our app. You can then just hit `CTRL+C` to kill it as normal.
 
-#### Errors you may encounter
-If you ever face this error when running ```./start.sh```:
-
-![image](https://github.com/ferncabrera/open_ims/assets/73137447/138d6587-0734-49f5-8e1d-8fb0bbd3e052)
-
-Then try running ```kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission```, as per [this github issue thread](https://github.com/kubernetes/ingress-nginx/issues/8216). The app should startup as normal (should...).
 #### Using the database
 We use a self-maintained postgres instance built using an official image from the project. The pod containing the running postgres instance itself is maintained by a statefulset exposed to our applications cluster through a headless kubernetes service.
 <br/>

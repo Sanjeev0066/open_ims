@@ -22,7 +22,9 @@ ${GREEN_BOLD}Master Makefile${END}
 	
 	- install-skaffold-quick: A from-the-docs 1 line to install skaffold. Can be run many times to re-install latest versions. (the executable used to actually install Skaffold is rm -rf'ed after the install is complete)
 	
-	- generate-configs-and-secrets: A way to generate the required prod/dev configmaps required to run the application (Can also be used to "refresh" configs before new deployments)
+	- generate-prod-configs-and-secrets: A way to generate the required prod configmaps required to run the application (Can also be used to "refresh" configs before new deployments)
+	
+	- generate-dev-configs-and-secrets: A way to generate the required dev configmaps required to run the application (Can also be used to "refresh" configs before new deployments)
 
 
 	${ORANGE_BOLD}- TODO:${END}
@@ -90,9 +92,13 @@ prod:
 	# helm upgrade beyla grafana/beyla -f common/beyla/helm-beyla.yaml
 .PHONY: prod
 
-generate-configs-and-secrets:
+generate-prod-configs-and-secrets:
 	./scripts/create-secrets-and-config-map.sh prod
-.PHONY: generate-configs-and-secrets
+.PHONY: generate-prod-configs-and-secrets
+
+generate-dev-configs-and-secrets:
+	./scripts/create-secrets-and-config-map.sh dev
+.PHONY: generate-dev-configs-and-secrets
 
 ms-image-clean:
 	@echo "Cleaning any open-ims server and client images!"

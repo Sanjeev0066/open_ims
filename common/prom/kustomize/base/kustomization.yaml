@@ -1,4 +1,5 @@
 resources:
+  - prom-config-map.yaml
   - prom-cluster-role.yaml
   - prom-role-binding.yaml
   - prom-persistent-volume-claim.yaml
